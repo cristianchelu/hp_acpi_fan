@@ -1,0 +1,15 @@
+.hp_acpi_fan.ko.cmd
+.hp_acpi_fan.mod.o.cmd
+.hp_acpi_fan.mod.cmd
+.hp_acpi_fan.o.cmd
+.tmp_versions/
+Module.symvers
+.Module.symvers.cmd
+hp_acpi_fan.ko
+hp_acpi_fan.mod
+hp_acpi_fan.mod.c
+hp_acpi_fan.mod.o
+hp_acpi_fan.o
+modules.order
+.modules.order.cmd
+.vscode
