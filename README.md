@@ -13,19 +13,26 @@ Embedded Controller hangs and other gremlins are to be expected.
 
 ## Installing
 Clone this repo
-> git clone https://github.com/cristianchelu/hp_acpi_fan
+```bash
+git clone https://github.com/cristianchelu/hp_acpi_fan.git
+```
 
 Build
-> cd hp_acpi_fan\
-> make
+```bash
+cd hp_acpi_fan
+make
+```
 
 and load the module
-> sudo insmod hp_acpi_fan.ko
+```bash
+sudo insmod hp_acpi_fan.ko
+```
 
 ## Parameters
 This module takes two optional parameters, representing the ACPI methods to use when reading/writing fan speed values. If not set, it will try to auto-detect available methods.
 
-> readtype={none,gtmm,gfve,gfrm,kgfs,gfsd,i2cc}\
+> readtype={none,gtmm,gfve,gfrm,kgfs,gfsd,i2cc}
+
 > ctrltype={auto,stmm,ksfs,kfcl,sfsd,i2cc}
 
 ## Testing
@@ -35,10 +42,16 @@ You may see the control methods available in your BIOS by disassembling your DSD
 
 ### Extracting the DSDT
 First extract the compiled contents
-> cat /sys/firmware/acpi/tables/DSDT > dsdt.dat
+
+```bash
+cat /sys/firmware/acpi/tables/DSDT > dsdt.dat
+```
 
 then disassemble
-> iasl -d dsdt.dat
+
+```bash
+iasl -d dsdt.dat
+```
 
 You should then have the decompiled `dsdt.dsl` file in the current directory.
 
@@ -52,14 +65,18 @@ https://github.com/nix-community/acpi_call
 
 Search the dsdt.dsl file for methods relating to fan control and reporting. (eg. methods writing to registries named `CFAN` or `PWM0` may be related to fan control). 
 
-Use `acpi_call` to probe said functions and compare their output with expected results. For example:
+Use `acpi_call` to probe said functions and compare their output with expected results. For example, running the following as root
 
-> echo "\_SB.PCI0.LPCB.EC0.GFSD" > | sudo tee /proc/acpi/call && sudo cat /proc/acpi/call
+```bash
+echo "\_SB.PCI0.LPCB.EC0.GFSD" > /proc/acpi/call && cat /proc/acpi/call
+```
 
 should return fan speed as a percentage, if such method exists.
 
 likewise,
-> echo "\_SB.PCI0.LPCB.EC0.SFSD 50" > | sudo tee /proc/acpi/call && sudo cat /proc/acpi/call
+```bash
+echo "\_SB.PCI0.LPCB.EC0.SFSD 50" > /proc/acpi/call && cat /proc/acpi/call
+```
 
 should set fan speed to 50%.
 
